@@ -180,11 +180,18 @@
     display: none;
     min-height: 100vh;
 
-    background-image: url('fondo.jpg');
+    /* Fondo principal */
+    background-color: #1a0533; /* color base tipo Sullivan */
 
-    background-size: cover;
+    /* Imagen */
+    background-image: url('fondo.jpg');
     background-position: center top;
-    background-repeat: no-repeat;
+
+    /* CLAVE: evita deformación */
+    background-size: 100% auto;
+
+    /* CLAVE: repite hacia abajo */
+    background-repeat: repeat-y;
 
     background-attachment: scroll;
 
@@ -302,8 +309,8 @@
     position: relative;
     /* Boo.png original 900×636 — personaje ocupa ~parte central vertical
        La silueta del personaje sin fondo necesita más altura que ancho */
-    width: clamp(220px, 70vw, 340px);
-    height: clamp(280px, 85vw, 420px);
+    width: clamp(190px, 60vw, 300px);
+    height: clamp(250px, 72vw, 360px);
     filter: drop-shadow(0 10px 20px rgba(60,0,120,0.35));
   }
   .boo-img {
@@ -614,24 +621,29 @@
   /* Balloon decorations */
   .balloon-group {
     position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* CENTRADO REAL */
     pointer-events: none;
     z-index: 1;
+    width: 100%;
+    max-width: 440px; /* mismo ancho del container */
   }
-
   /* Globo */
   .balloon {
     width: clamp(30px, 10vw, 55px);
     height: clamp(40px, 14vw, 70px);
-    border-radius: 50%; /* forma real de globo */
+    border-radius: 50%;
     position: absolute;
 
-    animation: balloonFloat ease-in-out infinite;
+    /* IMPORTANTE */
+    opacity: 0;
+    animation: balloonFloat 6s ease-in-out infinite;
+    animation-play-state: paused;
 
     box-shadow:
       inset -4px -4px 10px rgba(0,0,0,0.15),
       0 4px 10px rgba(0,0,0,0.15);
   }
-
   /* Nudo del globo */
   .balloon::before {
     content: '';
@@ -643,7 +655,6 @@
     background: inherit;
     transform: translateX(-50%) rotate(45deg);
   }
-
   /* Hilo */
   .balloon::after {
     content: '';
@@ -655,14 +666,21 @@
     background: rgba(0,0,0,0.2);
     transform: translateX(-50%);
   }
-
+  .balloons-active .balloon {
+    animation-play-state: running;
+  }
   /* Animación flotante mejorada */
   @keyframes balloonFloat {
-    0%,100% {
-      transform: translateY(0) rotate(-4deg);
+    0% {
+      transform: translateY(40px) scale(0.9) rotate(-4deg);
+      opacity: 0;
     }
-    50% {
-      transform: translateY(-18px) rotate(4deg);
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-120px) scale(1) rotate(4deg);
+      opacity: 1;
     }
   }
   /* Sparkle decorations on header */
@@ -692,7 +710,7 @@
     bottom: 12px;
     right: -18px;
 
-    font-size: clamp(70px, 18vw, 110px);
+    font-size: clamp(110px, 28vw, 190px);
 
     color: #c084fc;
 
@@ -749,36 +767,24 @@
 <div id="invitation">
 
   <!-- Balloon decorations -->
+  <!-- Globos centrados y visibles en móvil -->
 
-  <!-- Grupo superior derecho -->
-  <div class="balloon-group" style="top:40px;right:10px;">
-    <div class="balloon" style="background:#4ecde4;top:0;left:0;animation-duration:3s;"></div>
-    <div class="balloon" style="background:#c084fc;top:-25px;left:30px;animation-duration:4s;animation-delay:0.5s;"></div>
-    <div class="balloon" style="background:#f9a8d4;top:10px;left:60px;animation-duration:3.5s;animation-delay:1s;"></div>
+  <div class="balloon-group" style="top:60px;">
+    <div class="balloon" style="background:#4ecde4;left:10%;animation-duration:3s;"></div>
+    <div class="balloon" style="background:#c084fc;left:35%;top:-25px;animation-duration:4s;"></div>
+    <div class="balloon" style="background:#f9a8d4;left:60%;top:10px;animation-duration:3.5s;"></div>
   </div>
 
-  <!-- Grupo superior izquierdo -->
-  <div class="balloon-group" style="top:50px;left:10px;">
-    <div class="balloon" style="background:#f472b6;top:0;left:0;animation-duration:3.8s;"></div>
-    <div class="balloon" style="background:#818cf8;top:-20px;left:30px;animation-duration:4.2s;animation-delay:0.7s;"></div>
+  <div class="balloon-group" style="top:180px;">
+    <div class="balloon" style="background:#f472b6;left:15%;animation-duration:3.8s;"></div>
+    <div class="balloon" style="background:#818cf8;left:45%;top:-20px;animation-duration:4.2s;"></div>
+    <div class="balloon" style="background:#4ecde4;left:70%;top:5px;animation-duration:3.6s;"></div>
   </div>
 
-  <!-- NUEVO grupo medio derecho -->
-  <div class="balloon-group" style="top:160px;right:20px;">
-    <div class="balloon" style="background:#c084fc;top:0;left:0;animation-duration:3.2s;"></div>
-    <div class="balloon" style="background:#f472b6;top:-22px;left:28px;animation-duration:3.8s;"></div>
-  </div>
-
-  <!-- NUEVO grupo medio izquierdo -->
-  <div class="balloon-group" style="top:180px;left:10px;">
-    <div class="balloon" style="background:#4ecde4;top:0;left:0;animation-duration:3.5s;"></div>
-    <div class="balloon" style="background:#818cf8;top:-18px;left:25px;animation-duration:4.2s;"></div>
-  </div>
-
-  <!-- NUEVO grupo inferior -->
-  <div class="balloon-group" style="bottom:80px;right:15px;">
-    <div class="balloon" style="background:#f9a8d4;top:0;left:0;animation-duration:3.6s;"></div>
-    <div class="balloon" style="background:#c084fc;top:-20px;left:30px;animation-duration:4.5s;"></div>
+  <div class="balloon-group" style="bottom:120px;">
+    <div class="balloon" style="background:#c084fc;left:20%;animation-duration:3.2s;"></div>
+    <div class="balloon" style="background:#f472b6;left:50%;top:-20px;animation-duration:3.8s;"></div>
+    <div class="balloon" style="background:#f9a8d4;left:75%;animation-duration:4s;"></div>
   </div>
 
   <div class="inv-container">
@@ -801,7 +807,7 @@
       </div>
       <!-- ==== EDITA EL NOMBRE AQUI ==== -->
       <div class="inv-name">Nombre</div>
-      <div class="inv-tagline">Cumple su primer anito &#x1F388;</div>
+      <div class="inv-tagline">Cumple su primer añito &#x1F388;</div>
     </div>
 
     <!-- BOO + NUMBER 1 -->
@@ -944,6 +950,10 @@
     setTimeout(function() {
       doorScreen.style.display = 'none';
       inv.classList.add('visible');
+
+      // ACTIVAR GLOBOS
+      inv.classList.add('balloons-active');
+
     }, 1600);
   }
 </script>
